@@ -1,0 +1,23 @@
+.container {
+  background-color: #0a1e3e;
+  color: white;
+  padding: 20px;
+}
+
+.header {
+  background-color: #1a3a52;
+  padding: 10px;
+  text-align: center;
+}
+
+.button {
+  background-color: #1a3a52;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #0a1e3e;
+}
