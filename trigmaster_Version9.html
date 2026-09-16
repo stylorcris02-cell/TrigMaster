@@ -1,0 +1,2810 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrigMaster - Sistema Matemático Web</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #0099ff;
+    --primary-dark: #0066cc;
+    --secondary-color: #0a1428;
+    --accent-color: #0088ff;
+    --neon-blue: #0070dd;
+    --dark-blue: #0d1b2a;
+    --darker-blue: #051419;
+    --light-bg: #0f2940;
+    --lighter-bg: #1a3a52;
+    --dark-text: #b8d4e8;
+    --border-color: #0099ff;
+    --shadow: 0 4px 15px rgba(0, 153, 255, 0.15);
+    --shadow-lg: 0 10px 30px rgba(0, 153, 255, 0.25);
+}
+
+body.theme-dark {
+    --primary-color: #0099ff;
+    --primary-dark: #0066cc;
+    --secondary-color: #0a1428;
+    --accent-color: #0088ff;
+    --neon-blue: #0070dd;
+    --dark-blue: #0d1b2a;
+    --darker-blue: #051419;
+    --light-bg: #0f2940;
+    --lighter-bg: #1a3a52;
+    --dark-text: #b8d4e8;
+    --border-color: #0099ff;
+    --shadow: 0 4px 15px rgba(0, 153, 255, 0.15);
+    --shadow-lg: 0 10px 30px rgba(0, 153, 255, 0.25);
+}
+
+body.theme-light {
+    --primary-color: #0066cc;
+    --primary-dark: #004499;
+    --secondary-color: #f5f5f5;
+    --accent-color: #0055bb;
+    --neon-blue: #0044aa;
+    --dark-blue: #ffffff;
+    --darker-blue: #f0f0f0;
+    --light-bg: #e8f0ff;
+    --lighter-bg: #d0e0ff;
+    --dark-text: #333333;
+    --border-color: #0066cc;
+    --shadow: 0 4px 15px rgba(0, 102, 204, 0.15);
+    --shadow-lg: 0 10px 30px rgba(0, 102, 204, 0.25);
+}
+
+body.theme-red {
+    --primary-color: #ff3333;
+    --primary-dark: #cc0000;
+    --secondary-color: #0a1428;
+    --accent-color: #ff6666;
+    --neon-blue: #ff0000;
+    --dark-blue: #1a0a0a;
+    --darker-blue: #0d0505;
+    --light-bg: #2a1010;
+    --lighter-bg: #3a1818;
+    --dark-text: #ffb3b3;
+    --border-color: #ff3333;
+    --shadow: 0 4px 15px rgba(255, 51, 51, 0.15);
+    --shadow-lg: 0 10px 30px rgba(255, 51, 51, 0.25);
+}
+
+body.theme-green {
+    --primary-color: #00dd00;
+    --primary-dark: #00aa00;
+    --secondary-color: #0a1408;
+    --accent-color: #00ff00;
+    --neon-blue: #00cc00;
+    --dark-blue: #0d1a0d;
+    --darker-blue: #051405;
+    --light-bg: #0f2a0f;
+    --lighter-bg: #1a3a1a;
+    --dark-text: #b3ffb3;
+    --border-color: #00dd00;
+    --shadow: 0 4px 15px rgba(0, 221, 0, 0.15);
+    --shadow-lg: 0 10px 30px rgba(0, 221, 0, 0.25);
+}
+
+body.theme-purple {
+    --primary-color: #bb33ff;
+    --primary-dark: #8800cc;
+    --secondary-color: #1a0a28;
+    --accent-color: #dd66ff;
+    --neon-blue: #aa00ff;
+    --dark-blue: #1a0d2a;
+    --darker-blue: #0d051a;
+    --light-bg: #2a1a40;
+    --lighter-bg: #3a2a50;
+    --dark-text: #ddaaffff;
+    --border-color: #bb33ff;
+    --shadow: 0 4px 15px rgba(187, 51, 255, 0.15);
+    --shadow-lg: 0 10px 30px rgba(187, 51, 255, 0.25);
+}
+
+body.theme-orange {
+    --primary-color: #ff8833;
+    --primary-dark: #cc6600;
+    --secondary-color: #281408;
+    --accent-color: #ffaa66;
+    --neon-blue: #ff7700;
+    --dark-blue: #2a1a0d;
+    --darker-blue: #1a0d05;
+    --light-bg: #402a10;
+    --lighter-bg: #503a18;
+    --dark-text: #ffccb3;
+    --border-color: #ff8833;
+    --shadow: 0 4px 15px rgba(255, 136, 51, 0.15);
+    --shadow-lg: 0 10px 30px rgba(255, 136, 51, 0.25);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--darker-blue);
+    background: linear-gradient(135deg, var(--dark-blue) 0%, var(--secondary-color) 100%);
+    color: var(--dark-text);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ========== NAVBAR ========== */
+.navbar {
+    background: linear-gradient(135deg, var(--dark-blue), var(--secondary-color));
+    color: var(--primary-color);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-lg);
+    border-bottom: 2px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.navbar-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.navbar-brand h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(0, 153, 255, 0.4);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.menu-toggle {
+    background: rgba(0, 153, 255, 0.1);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 5px;
+    transition: all 0.3s;
+    display: none;
+    width: 50px;
+    height: 50px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-toggle:hover {
+    background: rgba(0, 153, 255, 0.15);
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.4);
+}
+
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: var(--primary-color);
+    margin: 4px 0;
+    transition: all 0.3s;
+}
+
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.qr-btn {
+    background: linear-gradient(135deg, var(--neon-blue), var(--primary-color));
+    color: var(--secondary-color);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.25);
+}
+
+.qr-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 153, 255, 0.4);
+}
+
+.theme-btn {
+    background: rgba(0, 153, 255, 0.1);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.theme-btn:hover {
+    background: rgba(0, 153, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.4);
+}
+
+.navbar-info {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin: 0;
+    color: var(--accent-color);
+}
+
+/* ========== MODAL TEMAS ========== */
+.theme-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.theme-modal.active {
+    display: flex;
+}
+
+.theme-modal-content {
+    background: linear-gradient(135deg, var(--light-bg), var(--lighter-bg));
+    border: 2px solid var(--primary-color);
+    border-radius: 15px;
+    box-shadow: 0 0 50px rgba(0, 153, 255, 0.4);
+    max-width: 600px;
+    width: 90%;
+    padding: 0;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.theme-modal-header {
+    background: linear-gradient(135deg, var(--dark-blue), var(--secondary-color));
+    color: var(--primary-color);
+    padding: 2rem;
+    border-bottom: 2px solid var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.theme-modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px rgba(0, 153, 255, 0.3);
+}
+
+.theme-modal-close {
+    background: rgba(0, 153, 255, 0.1);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.theme-modal-close:hover {
+    background: rgba(0, 153, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.4);
+}
+
+.theme-modal-body {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1.5rem;
+}
+
+.theme-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    background: rgba(0, 153, 255, 0.05);
+}
+
+.theme-option:hover {
+    border-color: var(--primary-color);
+    background: rgba(0, 153, 255, 0.1);
+}
+
+.theme-option.active {
+    border-color: var(--primary-color);
+    background: rgba(0, 153, 255, 0.2);
+    box-shadow: 0 0 15px rgba(0, 153, 255, 0.3);
+}
+
+.theme-color-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px currentColor;
+}
+
+.theme-option-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dark-text);
+    text-align: center;
+}
+
+/* ========== MODAL QR CODE ========== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, var(--light-bg), var(--lighter-bg));
+    border: 2px solid var(--primary-color);
+    border-radius: 15px;
+    box-shadow: 0 0 50px rgba(0, 153, 255, 0.4);
+    max-width: 500px;
+    width: 90%;
+    padding: 0;
+    animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--dark-blue), var(--secondary-color));
+    color: var(--primary-color);
+    padding: 2rem;
+    border-bottom: 2px solid var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px rgba(0, 153, 255, 0.3);
+}
+
+.modal-close {
+    background: rgba(0, 153, 255, 0.1);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.modal-close:hover {
+    background: rgba(0, 153, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.4);
+}
+
+.modal-body {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+#qrCodeContainer {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.qr-info {
+    color: var(--dark-text);
+    text-align: center;
+    margin: 0;
+}
+
+.download-btn {
+    background: linear-gradient(135deg, var(--neon-blue), var(--primary-color));
+    color: var(--secondary-color);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.25);
+    width: 100%;
+}
+
+.download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 153, 255, 0.4);
+}
+
+/* ========== SIDEBAR ========== */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 280px;
+    height: 100vh;
+    background: var(--dark-blue);
+    border-right: 2px solid var(--primary-color);
+    box-shadow: var(--shadow-lg);
+    overflow-y: auto;
+    z-index: 99;
+    margin-top: 0;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-header {
+    background: linear-gradient(135deg, var(--dark-blue), var(--secondary-color));
+    color: var(--primary-color);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    border-bottom: 2px solid var(--primary-color);
+    box-shadow: var(--shadow);
+}
+
+.sidebar-header h2 {
+    font-size: 1.3rem;
+    margin: 0;
+    text-shadow: 0 0 10px rgba(0, 153, 255, 0.3);
+}
+
+.close-btn {
+    background: rgba(0, 153, 255, 0.1);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.3rem;
+    border-radius: 3px;
+    display: none;
+    transition: all 0.3s;
+}
+
+.close-btn:hover {
+    background: rgba(0, 153, 255, 0.15);
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.4);
+}
+
+.sidebar-content {
+    padding: 1.5rem 0;
+}
+
+.category {
+    margin-bottom: 1rem;
+}
+
+.category-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    padding: 0.75rem 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0;
+    text-shadow: 0 0 5px rgba(0, 153, 255, 0.25);
+}
+
+.operations-list {
+    list-style: none;
+    padding: 0;
+}
+
+.operations-list li {
+    padding: 0;
+}
+
+.op-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--dark-text);
+    padding: 0.75rem 1.5rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+    border-left: 3px solid transparent;
+}
+
+.op-btn:hover {
+    background-color: rgba(0, 153, 255, 0.08);
+    border-left-color: var(--primary-color);
+    padding-left: 1.75rem;
+    color: var(--primary-color);
+    box-shadow: inset 0 0 10px rgba(0, 153, 255, 0.08);
+}
+
+.op-btn.active {
+    background-color: rgba(0, 153, 255, 0.15);
+    border-left-color: var(--primary-color);
+    color: var(--primary-color);
+    font-weight: 600;
+    box-shadow: inset 0 0 15px rgba(0, 153, 255, 0.15);
+    text-shadow: 0 0 5px rgba(0, 153, 255, 0.25);
+}
+
+/* ========== OVERLAY ========== */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 98;
+}
+
+.overlay.active {
+    display: block;
+}
+
+/* ========== MAIN CONTENT ========== */
+.main-content {
+    margin-left: 280px;
+    padding: 2rem;
+    min-height: calc(100vh - 70px);
+    transition: margin-left 0.3s ease;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* ========== WELCOME SECTION ========== */
+.welcome-section {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.welcome-section h2 {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 15px rgba(0, 153, 255, 0.3);
+}
+
+.welcome-section p {
+    font-size: 1.1rem;
+    color: var(--dark-text);
+    margin-bottom: 2rem;
+}
+
+.info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.info-card {
+    background: linear-gradient(135deg, var(--light-bg), var(--lighter-bg));
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    transition: all 0.3s;
+    border: 2px solid rgba(0, 153, 255, 0.25);
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 20px rgba(0, 153, 255, 0.3);
+}
+
+.info-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 8px rgba(0, 153, 255, 0.25);
+}
+
+.info-card p {
+    color: var(--dark-text);
+}
+
+/* ========== OPERATION SECTION ========== */
+.operation-section {
+    background: linear-gradient(135deg, var(--light-bg), var(--lighter-bg));
+    border-radius: 10px;
+    box-shadow: var(--shadow-lg);
+    padding: 2rem;
+    border: 2px solid var(--primary-color);
+}
+
+.operation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 1rem;
+}
+
+.operation-header h2 {
+    color: var(--primary-color);
+    margin: 0;
+    text-shadow: 0 0 10px rgba(0, 153, 255, 0.3);
+}
+
+.back-btn {
+    background: linear-gradient(135deg, var(--neon-blue), var(--primary-color));
+    color: var(--secondary-color);
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+    font-weight: 600;
+    box-shadow: 0 0 10px rgba(0, 153, 255, 0.25);
+}
+
+.back-btn:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    transform: translateX(-5px);
+    box-shadow: 0 0 20px rgba(0, 153, 255, 0.4);
+}
+
+/* ========== INPUT AREA ========== */
+.input-area {
+    background: rgba(13, 27, 42, 0.8);
+    padding: 2rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 153, 255, 0.15);
+}
+
+#operationForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: var(--primary-color);
+    text-shadow: 0 0 5px rgba(0, 153, 255, 0.2);
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.75rem;
+    border: 2px solid rgba(0, 153, 255, 0.25);
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s;
+    background: rgba(15, 41, 64, 0.8);
+    color: var(--dark-text);
+}
+
+.form-group input::placeholder {
+    color: rgba(184, 212, 232, 0.4);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 15px rgba(0, 153, 255, 0.3);
+    background: rgba(15, 41, 64, 0.9);
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.solve-btn {
+    flex: 1;
+    background: linear-gradient(135deg, var(--neon-blue), var(--primary-color));
+    color: var(--secondary-color);
+    border: none;
+    padding: 0.9rem 2rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 12px rgba(0, 153, 255, 0.25);
+}
+
+.solve-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(0, 153, 255, 0.4);
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+}
+
+.solve-btn:active {
+    transform: translateY(0);
+}
+
+.clear-btn {
+    background: rgba(0, 153, 255, 0.1);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    padding: 0.9rem 2rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.clear-btn:hover {
+    background: rgba(0, 153, 255, 0.15);
+    box-shadow: 0 0 12px rgba(0, 153, 255, 0.25);
+}
+
+/* ========== RESULTS AREA ========== */
+.results-area {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.result-card,
+.steps-card,
+.example-card,
+.verification-card {
+    background: linear-gradient(135deg, var(--light-bg), var(--lighter-bg));
+    padding: 2rem;
+    border-radius: 8px;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 12px rgba(0, 153, 255, 0.15);
+}
+
+.result-card h3,
+.steps-card h3,
+.example-card h3,
+.verification-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    text-shadow: 0 0 8px rgba(0, 153, 255, 0.2);
+}
+
+.result-value {
+    font-size: 2rem;
+    color: var(--accent-color);
+    font-weight: 700;
+    word-break: break-word;
+    text-shadow: 0 0 12px rgba(0, 136, 255, 0.3);
+    background: rgba(13, 27, 42, 0.5);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-color);
+}
+
+.error-message {
+    font-size: 1.1rem;
+    color: #ff6666;
+    font-weight: 600;
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(255, 102, 102, 0.1);
+    border-left: 4px solid #ff6666;
+    border-radius: 5px;
+}
+
+.steps-list {
+    margin-left: 1.5rem;
+    padding-left: 0;
+}
+
+.steps-list li {
+    margin-bottom: 1rem;
+    line-height: 1.8;
+    color: var(--dark-text);
+    background: rgba(13, 27, 42, 0.3);
+    padding: 0.75rem;
+    border-radius: 5px;
+    border-left: 3px solid var(--accent-color);
+}
+
+.steps-list li strong {
+    color: var(--primary-color);
+    text-shadow: 0 0 5px rgba(0, 153, 255, 0.25);
+}
+
+.verification-content {
+    background: rgba(13, 27, 42, 0.8);
+    padding: 1.5rem;
+    border-radius: 5px;
+    color: var(--dark-text);
+    border-left: 4px solid #66ff66;
+}
+
+.verification-content strong {
+    color: #66ff66;
+}
+
+#exampleContent {
+    background: rgba(13, 27, 42, 0.8);
+    padding: 1.5rem;
+    border-radius: 5px;
+    color: var(--dark-text);
+    border-left: 4px solid var(--primary-color);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .overlay.active {
+        display: block;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .close-btn {
+        display: block;
+    }
+
+    .navbar-container {
+        padding: 1rem;
+    }
+
+    .navbar-brand h1 {
+        font-size: 1.3rem;
+    }
+
+    .navbar-actions {
+        gap: 1rem;
+    }
+
+    .navbar-info {
+        display: none;
+    }
+
+    .qr-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .theme-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .welcome-section h2 {
+        font-size: 1.8rem;
+    }
+
+    .info-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .operation-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .back-btn {
+        align-self: flex-start;
+    }
+
+    .button-group {
+        flex-direction: column;
+    }
+
+    .results-area {
+        grid-template-columns: 1fr;
+    }
+
+    .operation-section {
+        padding: 1rem;
+    }
+
+    .modal-content {
+        width: 95%;
+    }
+
+    .theme-modal-content {
+        width: 95%;
+    }
+
+    .theme-modal-body {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand {
+        gap: 0.5rem;
+    }
+
+    .navbar-brand h1 {
+        font-size: 1.1rem;
+    }
+
+    .navbar-info {
+        display: none;
+    }
+
+    .welcome-section {
+        padding: 1.5rem;
+    }
+
+    .welcome-section h2 {
+        font-size: 1.5rem;
+    }
+
+    .input-area {
+        padding: 1rem;
+    }
+
+    .result-value {
+        font-size: 1.5rem;
+    }
+
+    .qr-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+    }
+
+    .theme-btn {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.7rem;
+    }
+
+    .menu-toggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .menu-toggle span {
+        width: 20px;
+        height: 2px;
+    }
+
+    .theme-modal-body {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .theme-color-box {
+        width: 50px;
+        height: 50px;
+    }
+
+    .steps-list {
+        margin-left: 1rem;
+    }
+}
+    </style>
+</head>
+<body class="theme-dark">
+    <!-- Barra de Navegação -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <button class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <h1>TrigMaster</h1>
+            </div>
+            <div class="navbar-actions">
+                <button class="theme-btn" id="themeBtn" title="Mudar Tema">Tema</button>
+                <button class="qr-btn" id="qrBtn" title="Gerar Código QR">Código QR</button>
+                <p class="navbar-info">Sistema Matemático Web</p>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal Temas -->
+    <div class="theme-modal" id="themeModal">
+        <div class="theme-modal-content">
+            <div class="theme-modal-header">
+                <h2>Escolha um Tema</h2>
+                <button class="theme-modal-close" id="themeModalClose">X</button>
+            </div>
+            <div class="theme-modal-body">
+                <div class="theme-option active" data-theme="theme-dark" id="themeDark">
+                    <div class="theme-color-box" style="background: linear-gradient(135deg, #0d1b2a, #0a1428); color: #0099ff;"></div>
+                    <div class="theme-option-label">Padrão</div>
+                </div>
+                <div class="theme-option" data-theme="theme-light" id="themeLight">
+                    <div class="theme-color-box" style="background: linear-gradient(135deg, #ffffff, #f5f5f5); color: #0066cc;"></div>
+                    <div class="theme-option-label">Claro</div>
+                </div>
+                <div class="theme-option" data-theme="theme-red" id="themeRed">
+                    <div class="theme-color-box" style="background: linear-gradient(135deg, #1a0a0a, #0a1428); color: #ff3333;"></div>
+                    <div class="theme-option-label">Vermelho</div>
+                </div>
+                <div class="theme-option" data-theme="theme-green" id="themeGreen">
+                    <div class="theme-color-box" style="background: linear-gradient(135deg, #0d1a0d, #0a1408); color: #00dd00;"></div>
+                    <div class="theme-option-label">Verde</div>
+                </div>
+                <div class="theme-option" data-theme="theme-purple" id="themePurple">
+                    <div class="theme-color-box" style="background: linear-gradient(135deg, #1a0d2a, #1a0a28); color: #bb33ff;"></div>
+                    <div class="theme-option-label">Roxo</div>
+                </div>
+                <div class="theme-option" data-theme="theme-orange" id="themeOrange">
+                    <div class="theme-color-box" style="background: linear-gradient(135deg, #2a1a0d, #281408); color: #ff8833;"></div>
+                    <div class="theme-option-label">Laranja</div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Código QR -->
+    <div class="modal" id="qrModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Código QR - TrigMaster</h2>
+                <button class="modal-close" id="modalClose">X</button>
+            </div>
+            <div class="modal-body">
+                <div id="qrCodeContainer"></div>
+                <p class="qr-info">Digitalize o código para aceder ao TrigMaster</p>
+                <button class="download-btn" id="downloadBtn">Descarregar Código QR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barra Lateral -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Operações Matemáticas</h2>
+            <button class="close-btn" id="closeBtn">X</button>
+        </div>
+        
+        <div class="sidebar-content">
+            <!-- Matemática Básica -->
+            <div class="category">
+                <h3 class="category-title">Matemática Básica</h3>
+                <ul class="operations-list">
+                    <li><button class="op-btn" data-operation="basic-arithmetic">Operações Aritméticas</button></li>
+                    <li><button class="op-btn" data-operation="fractions">Operações com Frações</button></li>
+                    <li><button class="op-btn" data-operation="percentage">Cálculo de Percentagens</button></li>
+                    <li><button class="op-btn" data-operation="gcd">Máximo Divisor Comum (MDC)</button></li>
+                    <li><button class="op-btn" data-operation="lcm">Mínimo Múltiplo Comum (MMC)</button></li>
+                    <li><button class="op-btn" data-operation="prime">Fatorização Prima</button></li>
+                </ul>
+            </div>
+
+            <!-- Radiciação -->
+            <div class="category">
+                <h3 class="category-title">Radiciação</h3>
+                <ul class="operations-list">
+                    <li><button class="op-btn" data-operation="squareroot">Raiz Quadrada</button></li>
+                    <li><button class="op-btn" data-operation="cuberoot">Raiz Cúbica</button></li>
+                    <li><button class="op-btn" data-operation="nthroot">Raiz Enésima</button></li>
+                    <li><button class="op-btn" data-operation="rootsimplification">Simplificação de Raízes</button></li>
+                    <li><button class="op-btn" data-operation="root-operations">Operações com Raízes</button></li>
+                </ul>
+            </div>
+
+            <!-- Polinómios -->
+            <div class="category">
+                <h3 class="category-title">Polinómios</h3>
+                <ul class="operations-list">
+                    <li><button class="op-btn" data-operation="poly-addition">Adição de Polinómios</button></li>
+                    <li><button class="op-btn" data-operation="poly-subtraction">Subtração de Polinómios</button></li>
+                    <li><button class="op-btn" data-operation="poly-multiplication">Multiplicação de Polinómios</button></li>
+                    <li><button class="op-btn" data-operation="poly-division">Divisão de Polinómios</button></li>
+                </ul>
+            </div>
+
+            <!-- Equações -->
+            <div class="category">
+                <h3 class="category-title">Equações</h3>
+                <ul class="operations-list">
+                    <li><button class="op-btn" data-operation="eq1grau">Equação do 1º Grau</button></li>
+                    <li><button class="op-btn" data-operation="eq2grau">Equação do 2º Grau</button></li>
+                </ul>
+            </div>
+
+            <!-- Trigonometria -->
+            <div class="category">
+                <h3 class="category-title">Trigonometria</h3>
+                <ul class="operations-list">
+                    <li><button class="op-btn" data-operation="sine">Seno</button></li>
+                    <li><button class="op-btn" data-operation="cosine">Cosseno</button></li>
+                    <li><button class="op-btn" data-operation="tangent">Tangente</button></li>
+                </ul>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Sobreposição para fechar barra lateral -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Área Principal -->
+    <main class="main-content" id="mainContent">
+        <div class="container">
+            <!-- Mensagem de Boas-vindas -->
+            <div class="welcome-section" id="welcomeSection">
+                <h2>Bem-vindo ao TrigMaster</h2>
+                <p>Escolha uma operação matemática no menu lateral para começar.</p>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <h3>Aprenda</h3>
+                        <p>Compreenda cada passo da resolução</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Calcule</h3>
+                        <p>Resolva problemas matemáticos rapidamente</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Exemplos</h3>
+                        <p>Veja exemplos semelhantes para melhor compreensão</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Área de Entrada e Resultados -->
+            <div class="operation-section" id="operationSection" style="display: none;">
+                <div class="operation-header">
+                    <h2 id="operationTitle"></h2>
+                    <button class="back-btn" id="backBtn">Voltar</button>
+                </div>
+
+                <div class="input-area">
+                    <form id="operationForm"></form>
+                </div>
+
+                <div class="results-area" id="resultsArea" style="display: none;">
+                    <div class="result-card">
+                        <h3>Resultado</h3>
+                        <div class="result-value" id="resultValue"></div>
+                    </div>
+
+                    <div class="steps-card" id="stepsCard" style="display: none;">
+                        <h3>Resolução Passo a Passo</h3>
+                        <ol class="steps-list" id="stepsList"></ol>
+                    </div>
+
+                    <div class="verification-card" id="verificationCard" style="display: none;">
+                        <h3>Verificação</h3>
+                        <div class="verification-content" id="verificationContent"></div>
+                    </div>
+
+                    <div class="example-card" id="exampleCard" style="display: none;">
+                        <h3>Exemplo Semelhante</h3>
+                        <div id="exampleContent"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+// ======================== CONFIGURAÇÃO GERAL ========================
+
+const app = {
+    currentOperation: null,
+    operationData: {},
+    currentUrl: window.location.href,
+    currentTheme: 'theme-dark',
+};
+
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
+const closeBtn = document.getElementById('closeBtn');
+const backBtn = document.getElementById('backBtn');
+const welcomeSection = document.getElementById('welcomeSection');
+const operationSection = document.getElementById('operationSection');
+const operationForm = document.getElementById('operationForm');
+const operationTitle = document.getElementById('operationTitle');
+const resultsArea = document.getElementById('resultsArea');
+const stepsCard = document.getElementById('stepsCard');
+const exampleCard = document.getElementById('exampleCard');
+const verificationCard = document.getElementById('verificationCard');
+
+const qrBtn = document.getElementById('qrBtn');
+const qrModal = document.getElementById('qrModal');
+const modalClose = document.getElementById('modalClose');
+const qrCodeContainer = document.getElementById('qrCodeContainer');
+const downloadBtn = document.getElementById('downloadBtn');
+
+const themeBtn = document.getElementById('themeBtn');
+const themeModal = document.getElementById('themeModal');
+const themeModalClose = document.getElementById('themeModalClose');
+const body = document.body;
+
+// ======================== CLASSE POLINÓMIO ========================
+
+class Polynomial {
+    constructor(coefficients = {}) {
+        // coefficients é um objeto: {grau: coeficiente}
+        this.coefficients = coefficients;
+    }
+
+    static fromString(str) {
+        if (!str || typeof str !== 'string') return null;
+        
+        str = str.replace(/\s/g, '');
+        if (!str) return null;
+
+        const coefficients = {};
+        
+        // Regex melhorado para captar termos
+        const termRegex = /([+-]?)(\d*\.?\d*)?x\^(\d+)|([+-]?)(\d+\.?\d*)/g;
+        let match;
+        let foundTerms = 0;
+
+        while ((match = termRegex.exec(str)) !== null) {
+            if (match[3] !== undefined) {
+                // Termo com x^n
+                const sign = match[1] === '-' ? -1 : 1;
+                const coef = match[2] ? parseFloat(match[2]) : 1;
+                const degree = parseInt(match[3]);
+                coefficients[degree] = (coefficients[degree] || 0) + sign * coef;
+                foundTerms++;
+            } else if (match[5] !== undefined) {
+                // Termo constante
+                const sign = match[4] === '-' ? -1 : 1;
+                const coef = parseFloat(match[5]);
+                coefficients[0] = (coefficients[0] || 0) + sign * coef;
+                foundTerms++;
+            }
+        }
+
+        return foundTerms > 0 ? new Polynomial(coefficients) : null;
+    }
+
+    toString() {
+        const degrees = Object.keys(this.coefficients)
+            .map(Number)
+            .sort((a, b) => b - a);
+
+        if (degrees.length === 0) return '0';
+
+        let result = '';
+        for (const degree of degrees) {
+            if (this.coefficients[degree] === 0) continue;
+
+            const coef = this.coefficients[degree];
+            const sign = coef > 0 && result !== '' ? ' + ' : ' ';
+            const absCoef = Math.abs(coef);
+
+            if (degree === 0) {
+                result += `${sign}${coef}`;
+            } else if (degree === 1) {
+                if (absCoef === 1) {
+                    result += `${sign}${coef > 0 ? '' : '-'}x`;
+                } else {
+                    result += `${sign}${coef}x`;
+                }
+            } else {
+                if (absCoef === 1) {
+                    result += `${sign}${coef > 0 ? '' : '-'}x^${degree}`;
+                } else {
+                    result += `${sign}${coef}x^${degree}`;
+                }
+            }
+        }
+
+        return result.trim() || '0';
+    }
+
+    add(other) {
+        const result = new Polynomial({...this.coefficients});
+        for (const degree in other.coefficients) {
+            result.coefficients[degree] = (result.coefficients[degree] || 0) + other.coefficients[degree];
+        }
+        return result;
+    }
+
+    subtract(other) {
+        const result = new Polynomial({...this.coefficients});
+        for (const degree in other.coefficients) {
+            result.coefficients[degree] = (result.coefficients[degree] || 0) - other.coefficients[degree];
+        }
+        return result;
+    }
+
+    multiply(other) {
+        const result = new Polynomial({});
+        for (const deg1 in this.coefficients) {
+            for (const deg2 in other.coefficients) {
+                const newDegree = parseInt(deg1) + parseInt(deg2);
+                const newCoef = this.coefficients[deg1] * other.coefficients[deg2];
+                result.coefficients[newDegree] = (result.coefficients[newDegree] || 0) + newCoef;
+            }
+        }
+        return result;
+    }
+
+    evaluate(x) {
+        let result = 0;
+        for (const degree in this.coefficients) {
+            result += this.coefficients[degree] * Math.pow(x, parseInt(degree));
+        }
+        return result;
+    }
+
+    getDegree() {
+        return Math.max(...Object.keys(this.coefficients).map(Number), -1);
+    }
+
+    clean() {
+        const cleaned = new Polynomial({});
+        for (const degree in this.coefficients) {
+            if (Math.abs(this.coefficients[degree]) > 1e-10) {
+                cleaned.coefficients[degree] = this.coefficients[degree];
+            }
+        }
+        return cleaned;
+    }
+}
+
+// ======================== DEFINIÇÃO DE OPERAÇÕES ========================
+
+const operations = {
+    'basic-arithmetic': {
+        title: 'Operações Aritméticas (Números Inteiros e Decimais)',
+        fields: [
+            { name: 'number1', label: 'Primeiro Número', type: 'number', step: 'any' },
+            { name: 'operation', label: 'Operação', type: 'select', options: ['+', '-', 'x', '/'] },
+            { name: 'number2', label: 'Segundo Número', type: 'number', step: 'any' },
+        ],
+        handler: solveBasicArithmetic,
+    },
+    fractions: {
+        title: 'Operações com Frações',
+        fields: [
+            { name: 'numerator1', label: 'Numerador 1', type: 'number' },
+            { name: 'denominator1', label: 'Denominador 1', type: 'number' },
+            { name: 'operation', label: 'Operação', type: 'select', options: ['+', '-', 'x', '/'] },
+            { name: 'numerator2', label: 'Numerador 2', type: 'number' },
+            { name: 'denominator2', label: 'Denominador 2', type: 'number' },
+        ],
+        handler: solveFractions,
+    },
+    percentage: {
+        title: 'Cálculo de Percentagens',
+        fields: [
+            { name: 'value', label: 'Valor', type: 'number', step: 'any' },
+            { name: 'percent', label: 'Percentagem (%)', type: 'number', step: 'any' },
+        ],
+        handler: solvePercentage,
+    },
+    squareroot: {
+        title: 'Raiz Quadrada',
+        fields: [
+            { name: 'number', label: 'Número', type: 'number', min: '0', step: 'any' },
+        ],
+        handler: solveSquareRoot,
+    },
+    cuberoot: {
+        title: 'Raiz Cúbica',
+        fields: [
+            { name: 'number', label: 'Número', type: 'number', step: 'any' },
+        ],
+        handler: solveCubeRoot,
+    },
+    nthroot: {
+        title: 'Raiz Enésima',
+        fields: [
+            { name: 'number', label: 'Número', type: 'number', min: '0', step: 'any' },
+            { name: 'index', label: 'Índice da Raiz (n)', type: 'number', min: '2' },
+        ],
+        handler: solveNthRoot,
+    },
+    rootsimplification: {
+        title: 'Simplificação de Raízes',
+        fields: [
+            { name: 'radicand', label: 'Radicando (número dentro da raiz)', type: 'number', min: '0' },
+            { name: 'index', label: 'Índice (padrão: 2 para quadrada)', type: 'number', min: '2', value: '2' },
+        ],
+        handler: solveRootSimplification,
+    },
+    'root-operations': {
+        title: 'Operações com Raízes',
+        fields: [
+            { name: 'radicand1', label: 'Radicando 1', type: 'number', min: '0' },
+            { name: 'index1', label: 'Índice 1 (padrão: 2)', type: 'number', min: '2', value: '2' },
+            { name: 'operation', label: 'Operação', type: 'select', options: ['+', '-', 'x', '/'] },
+            { name: 'radicand2', label: 'Radicando 2', type: 'number', min: '0' },
+            { name: 'index2', label: 'Índice 2 (padrão: 2)', type: 'number', min: '2', value: '2' },
+        ],
+        handler: solveRootOperations,
+    },
+    'poly-addition': {
+        title: 'Adição de Polinómios',
+        fields: [
+            { name: 'poly1', label: 'Polinómio 1', type: 'text', placeholder: 'Ex: 2x^2 + 3x + 1' },
+            { name: 'poly2', label: 'Polinómio 2', type: 'text', placeholder: 'Ex: x^2 + 2x + 3' },
+        ],
+        handler: solvePolyAddition,
+    },
+    'poly-subtraction': {
+        title: 'Subtração de Polinómios',
+        fields: [
+            { name: 'poly1', label: 'Polinómio 1', type: 'text', placeholder: 'Ex: 2x^2 + 3x + 1' },
+            { name: 'poly2', label: 'Polinómio 2', type: 'text', placeholder: 'Ex: x^2 + 2x + 3' },
+        ],
+        handler: solvePolySubtraction,
+    },
+    'poly-multiplication': {
+        title: 'Multiplicação de Polinómios',
+        fields: [
+            { name: 'poly1', label: 'Polinómio 1', type: 'text', placeholder: 'Ex: 2x + 1' },
+            { name: 'poly2', label: 'Polinómio 2', type: 'text', placeholder: 'Ex: x + 3' },
+        ],
+        handler: solvePolyMultiplication,
+    },
+    'poly-division': {
+        title: 'Divisão de Polinómios',
+        fields: [
+            { name: 'dividend', label: 'Dividendo', type: 'text', placeholder: 'Ex: x^2 + 5x + 6' },
+            { name: 'divisor', label: 'Divisor', type: 'text', placeholder: 'Ex: x + 2' },
+        ],
+        handler: solvePolyDivision,
+    },
+    eq1grau: {
+        title: 'Equação do 1º Grau (ax + b = 0)',
+        fields: [
+            { name: 'a', label: 'Coeficiente a', type: 'number', step: 'any' },
+            { name: 'b', label: 'Coeficiente b', type: 'number', step: 'any' },
+        ],
+        handler: solveEquation1Grau,
+    },
+    eq2grau: {
+        title: 'Equação do 2º Grau (ax² + bx + c = 0)',
+        fields: [
+            { name: 'a', label: 'Coeficiente a', type: 'number', step: 'any' },
+            { name: 'b', label: 'Coeficiente b', type: 'number', step: 'any' },
+            { name: 'c', label: 'Coeficiente c', type: 'number', step: 'any' },
+        ],
+        handler: solveEquation2Grau,
+    },
+    gcd: {
+        title: 'Máximo Divisor Comum (MDC)',
+        fields: [
+            { name: 'number1', label: 'Primeiro Número', type: 'number' },
+            { name: 'number2', label: 'Segundo Número', type: 'number' },
+        ],
+        handler: solveGCD,
+    },
+    lcm: {
+        title: 'Mínimo Múltiplo Comum (MMC)',
+        fields: [
+            { name: 'number1', label: 'Primeiro Número', type: 'number' },
+            { name: 'number2', label: 'Segundo Número', type: 'number' },
+        ],
+        handler: solveLCM,
+    },
+    prime: {
+        title: 'Fatorização Prima',
+        fields: [
+            { name: 'number', label: 'Número', type: 'number', min: '2' },
+        ],
+        handler: solvePrimeFactor,
+    },
+    sine: {
+        title: 'Seno',
+        fields: [
+            { name: 'angle', label: 'Ângulo (em graus)', type: 'number', step: 'any' },
+        ],
+        handler: solveSine,
+    },
+    cosine: {
+        title: 'Cosseno',
+        fields: [
+            { name: 'angle', label: 'Ângulo (em graus)', type: 'number', step: 'any' },
+        ],
+        handler: solveCosine,
+    },
+    tangent: {
+        title: 'Tangente',
+        fields: [
+            { name: 'angle', label: 'Ângulo (em graus)', type: 'number', step: 'any' },
+        ],
+        handler: solveTangent,
+    },
+};
+
+// ======================== TEMA - EVENT LISTENERS ========================
+
+themeBtn?.addEventListener('click', () => {
+    themeModal.classList.add('active');
+});
+
+themeModalClose?.addEventListener('click', () => {
+    themeModal.classList.remove('active');
+});
+
+themeModal?.addEventListener('click', (e) => {
+    if (e.target === themeModal) {
+        themeModal.classList.remove('active');
+    }
+});
+
+document.querySelectorAll('.theme-option').forEach(option => {
+    option.addEventListener('click', () => {
+        const theme = option.dataset.theme;
+        changeTheme(theme);
+        
+        document.querySelectorAll('.theme-option').forEach(opt => {
+            opt.classList.remove('active');
+        });
+        option.classList.add('active');
+        
+        themeModal.classList.remove('active');
+    });
+});
+
+// ======================== TEMA - FUNÇÕES ========================
+
+function changeTheme(theme) {
+    body.className = theme;
+    app.currentTheme = theme;
+    localStorage.setItem('trigmaster-theme', theme);
+}
+
+function loadSavedTheme() {
+    const savedTheme = localStorage.getItem('trigmaster-theme');
+    if (savedTheme) {
+        changeTheme(savedTheme);
+        document.querySelector(`[data-theme="${savedTheme}"]`)?.classList.add('active');
+    }
+}
+
+// ======================== EVENT LISTENERS ========================
+
+menuToggle?.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+    overlay.classList.toggle('active');
+});
+
+closeBtn?.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+});
+
+overlay?.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+});
+
+backBtn?.addEventListener('click', () => {
+    welcomeSection.style.display = 'block';
+    operationSection.style.display = 'none';
+    resultsArea.style.display = 'none';
+    stepsCard.style.display = 'none';
+    exampleCard.style.display = 'none';
+    verificationCard.style.display = 'none';
+    app.currentOperation = null;
+    document.querySelectorAll('.op-btn').forEach(btn => btn.classList.remove('active'));
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+});
+
+qrBtn?.addEventListener('click', () => {
+    generateQRCode();
+});
+
+modalClose?.addEventListener('click', () => {
+    qrModal.classList.remove('active');
+});
+
+qrModal?.addEventListener('click', (e) => {
+    if (e.target === qrModal) {
+        qrModal.classList.remove('active');
+    }
+});
+
+document.querySelectorAll('.op-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const operation = e.target.dataset.operation;
+        selectOperation(operation);
+    });
+});
+
+// ======================== FUNÇÕES CÓDIGO QR ========================
+
+function generateQRCode() {
+    qrCodeContainer.innerHTML = '';
+    const qr = new QRCode(qrCodeContainer, {
+        text: app.currentUrl,
+        width: 300,
+        height: 300,
+        colorDark: '#0099ff',
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.H,
+    });
+    
+    qrModal.classList.add('active');
+    
+    setTimeout(() => {
+        downloadBtn.onclick = () => {
+            const canvas = qrCodeContainer.querySelector('canvas');
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = 'trigmaster-codigo-qr.png';
+            link.click();
+        };
+    }, 100);
+}
+
+// ======================== FUNÇÕES DE OPERAÇÕES ========================
+
+function selectOperation(operationKey) {
+    if (!operations[operationKey]) {
+        alert('Operação não encontrada');
+        return;
+    }
+
+    app.currentOperation = operationKey;
+    const operation = operations[operationKey];
+
+    operationTitle.textContent = operation.title;
+    welcomeSection.style.display = 'none';
+    operationSection.style.display = 'block';
+    resultsArea.style.display = 'none';
+    stepsCard.style.display = 'none';
+    exampleCard.style.display = 'none';
+    verificationCard.style.display = 'none';
+
+    sidebar.classList.remove('active');
+    overlay.classList.remove('active');
+
+    document.querySelectorAll('.op-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.operation === operationKey) {
+            btn.classList.add('active');
+        }
+    });
+
+    renderForm(operation.fields);
+}
+
+function renderForm(fields) {
+    operationForm.innerHTML = '';
+
+    fields.forEach(field => {
+        const formGroup = document.createElement('div');
+        formGroup.className = 'form-group';
+
+        if (field.type === 'select') {
+            const label = document.createElement('label');
+            label.textContent = field.label;
+            formGroup.appendChild(label);
+
+            const select = document.createElement('select');
+            select.name = field.name;
+            select.id = field.name;
+
+            field.options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.textContent = opt;
+                select.appendChild(option);
+            });
+
+            formGroup.appendChild(select);
+        } else {
+            const label = document.createElement('label');
+            label.textContent = field.label;
+            formGroup.appendChild(label);
+
+            const input = document.createElement('input');
+            input.type = field.type;
+            input.name = field.name;
+            input.id = field.name;
+            input.required = true;
+            if (field.min) input.min = field.min;
+            if (field.max) input.max = field.max;
+            if (field.step) input.step = field.step;
+            if (field.value) input.value = field.value;
+            if (field.placeholder) input.placeholder = field.placeholder;
+            input.placeholder = field.placeholder || `Digite ${field.label.toLowerCase()}`;
+
+            formGroup.appendChild(input);
+        }
+
+        operationForm.appendChild(formGroup);
+    });
+
+    const buttonGroup = document.createElement('div');
+    buttonGroup.className = 'button-group';
+
+    const solveBtn = document.createElement('button');
+    solveBtn.type = 'button';
+    solveBtn.className = 'solve-btn';
+    solveBtn.textContent = 'Resolver';
+    solveBtn.addEventListener('click', handleSolve);
+
+    const clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
+    clearBtn.className = 'clear-btn';
+    clearBtn.textContent = 'Limpar';
+    clearBtn.addEventListener('click', () => operationForm.reset());
+
+    buttonGroup.appendChild(solveBtn);
+    buttonGroup.appendChild(clearBtn);
+    operationForm.appendChild(buttonGroup);
+}
+
+function handleSolve() {
+    if (!app.currentOperation) return;
+
+    const operation = operations[app.currentOperation];
+    const formData = new FormData(operationForm);
+    const data = Object.fromEntries(formData);
+
+    for (const field of operation.fields) {
+        if (!data[field.name]) {
+            alert(`Por favor, preencha o campo: ${field.label}`);
+            return;
+        }
+    }
+
+    const result = operation.handler(data);
+    displayResults(result);
+}
+
+function displayResults(result) {
+    if (result.isError) {
+        document.getElementById('resultValue').innerHTML = `<div class="error-message">${result.result}</div>`;
+        stepsCard.style.display = 'none';
+        exampleCard.style.display = 'none';
+        verificationCard.style.display = 'none';
+    } else {
+        document.getElementById('resultValue').textContent = result.result;
+        
+        const stepsList = document.getElementById('stepsList');
+        stepsList.innerHTML = '';
+        result.steps.forEach(step => {
+            const li = document.createElement('li');
+            li.innerHTML = step;
+            stepsList.appendChild(li);
+        });
+
+        document.getElementById('exampleContent').innerHTML = result.example;
+        
+        if (result.verification) {
+            document.getElementById('verificationContent').innerHTML = result.verification;
+            verificationCard.style.display = 'block';
+        } else {
+            verificationCard.style.display = 'none';
+        }
+        
+        stepsCard.style.display = 'block';
+        exampleCard.style.display = 'block';
+    }
+
+    resultsArea.style.display = 'block';
+    resultsArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ======================== HANDLERS - OPERAÇÕES ARITMÉTICAS ========================
+
+function solveBasicArithmetic(data) {
+    const num1 = parseFloat(data.number1);
+    const num2 = parseFloat(data.number2);
+    const operation = data.operation;
+
+    let result;
+    let steps = [
+        `Primeiro Número: ${num1}`,
+        `Operação: ${operation}`,
+        `Segundo Número: ${num2}`,
+        ``,
+    ];
+
+    switch (operation) {
+        case '+':
+            result = num1 + num2;
+            steps.push(`Adição: ${num1} + ${num2}`);
+            steps.push(`<strong>Resultado: ${result}</strong>`);
+            break;
+
+        case '-':
+            result = num1 - num2;
+            steps.push(`Subtração: ${num1} - ${num2}`);
+            steps.push(`<strong>Resultado: ${result}</strong>`);
+            break;
+
+        case 'x':
+            result = num1 * num2;
+            steps.push(`Multiplicação: ${num1} × ${num2}`);
+            steps.push(`<strong>Resultado: ${result}</strong>`);
+            break;
+
+        case '/':
+            if (num2 === 0) {
+                return {
+                    result: 'Não é possível fazer a divisão por zero. O divisor não pode ser zero.',
+                    isError: true,
+                };
+            }
+            result = num1 / num2;
+            steps.push(`Divisão: ${num1} ÷ ${num2}`);
+            steps.push(`<strong>Resultado: ${Number.isInteger(result) ? result : result.toFixed(6)}</strong>`);
+            break;
+    }
+
+    return {
+        result: Number.isInteger(result) ? result : result.toFixed(6),
+        steps: steps,
+        example: `Exemplos: 15 + 7 = 22; 20 - 8 = 12; 6 × 5 = 30; 24 ÷ 4 = 6; 12.5 + 3.5 = 16`,
+        isError: false,
+    };
+}
+
+// ======================== HANDLERS - POLINÓMIOS ========================
+
+function solvePolyAddition(data) {
+    const poly1 = Polynomial.fromString(data.poly1);
+    const poly2 = Polynomial.fromString(data.poly2);
+    
+    if (!poly1 || !poly2) {
+        return {
+            result: 'Formato de polinómio inválido. Use o formato: 2x^2 + 3x + 1',
+            isError: true,
+        };
+    }
+    
+    const result = poly1.add(poly2).clean();
+    const resultStr = result.toString();
+    
+    const steps = [
+        `Polinómio 1: ${poly1.toString()}`,
+        `Polinómio 2: ${poly2.toString()}`,
+        ``,
+        `Procedimento:`,
+        `Agrupar termos de igual grau:`,
+        `<strong>Resultado: ${resultStr}</strong>`,
+    ];
+
+    // Verificação com um valor x
+    const xValue = 2;
+    const val1 = poly1.evaluate(xValue);
+    const val2 = poly2.evaluate(xValue);
+    const valResult = result.evaluate(xValue);
+    const verification = `
+        <strong>Verificação com x = ${xValue}:</strong><br>
+        Polinómio 1 (x = ${xValue}): ${val1.toFixed(2)}<br>
+        Polinómio 2 (x = ${xValue}): ${val2.toFixed(2)}<br>
+        Soma: ${val1.toFixed(2)} + ${val2.toFixed(2)} = ${(val1 + val2).toFixed(2)}<br>
+        Resultado (x = ${xValue}): ${valResult.toFixed(2)}<br>
+        <strong style="color: #66ff66;">✓ Verificação correcta!</strong>
+    `;
+    
+    return {
+        result: resultStr,
+        steps: steps,
+        example: `Exemplo: (2x² + 3x + 1) + (x² + 2x + 3) = 3x² + 5x + 4`,
+        verification: verification,
+        isError: false,
+    };
+}
+
+function solvePolySubtraction(data) {
+    const poly1 = Polynomial.fromString(data.poly1);
+    const poly2 = Polynomial.fromString(data.poly2);
+    
+    if (!poly1 || !poly2) {
+        return {
+            result: 'Formato de polinómio inválido. Use o formato: 2x^2 + 3x + 1',
+            isError: true,
+        };
+    }
+    
+    const result = poly1.subtract(poly2).clean();
+    const resultStr = result.toString();
+    
+    const steps = [
+        `Polinómio 1: ${poly1.toString()}`,
+        `Polinómio 2: ${poly2.toString()}`,
+        ``,
+        `Procedimento:`,
+        `Inverter o sinal de todos os termos do segundo polinómio`,
+        `Depois agrupar termos de igual grau:`,
+        `<strong>Resultado: ${resultStr}</strong>`,
+    ];
+
+    // Verificação
+    const xValue = 2;
+    const val1 = poly1.evaluate(xValue);
+    const val2 = poly2.evaluate(xValue);
+    const valResult = result.evaluate(xValue);
+    const verification = `
+        <strong>Verificação com x = ${xValue}:</strong><br>
+        Polinómio 1 (x = ${xValue}): ${val1.toFixed(2)}<br>
+        Polinómio 2 (x = ${xValue}): ${val2.toFixed(2)}<br>
+        Diferença: ${val1.toFixed(2)} - ${val2.toFixed(2)} = ${(val1 - val2).toFixed(2)}<br>
+        Resultado (x = ${xValue}): ${valResult.toFixed(2)}<br>
+        <strong style="color: #66ff66;">✓ Verificação correcta!</strong>
+    `;
+    
+    return {
+        result: resultStr,
+        steps: steps,
+        example: `Exemplo: (2x² + 3x + 1) - (x² + 2x + 3) = x² + x - 2`,
+        verification: verification,
+        isError: false,
+    };
+}
+
+function solvePolyMultiplication(data) {
+    const poly1 = Polynomial.fromString(data.poly1);
+    const poly2 = Polynomial.fromString(data.poly2);
+    
+    if (!poly1 || !poly2) {
+        return {
+            result: 'Formato de polinómio inválido. Use o formato: 2x + 1',
+            isError: true,
+        };
+    }
+    
+    const result = poly1.multiply(poly2).clean();
+    const resultStr = result.toString();
+    
+    const steps = [
+        `Polinómio 1: ${poly1.toString()}`,
+        `Polinómio 2: ${poly2.toString()}`,
+        ``,
+        `Procedimento:`,
+        `Multiplicar cada termo do primeiro polinómio por cada termo do segundo`,
+        `Depois agrupar termos de igual grau:`,
+        `<strong>Resultado: ${resultStr}</strong>`,
+    ];
+
+    // Verificação
+    const xValue = 2;
+    const val1 = poly1.evaluate(xValue);
+    const val2 = poly2.evaluate(xValue);
+    const valResult = result.evaluate(xValue);
+    const verification = `
+        <strong>Verificação com x = ${xValue}:</strong><br>
+        Polinómio 1 (x = ${xValue}): ${val1.toFixed(2)}<br>
+        Polinómio 2 (x = ${xValue}): ${val2.toFixed(2)}<br>
+        Produto: ${val1.toFixed(2)} × ${val2.toFixed(2)} = ${(val1 * val2).toFixed(2)}<br>
+        Resultado (x = ${xValue}): ${valResult.toFixed(2)}<br>
+        <strong style="color: #66ff66;">✓ Verificação correcta!</strong>
+    `;
+    
+    return {
+        result: resultStr,
+        steps: steps,
+        example: `Exemplo: (2x + 1) × (x + 3) = 2x² + 7x + 3`,
+        verification: verification,
+        isError: false,
+    };
+}
+
+function solvePolyDivision(data) {
+    const poly1 = Polynomial.fromString(data.dividend);
+    const poly2 = Polynomial.fromString(data.divisor);
+    
+    if (!poly1 || !poly2) {
+        return {
+            result: 'Formato de polinómio inválido.',
+            isError: true,
+        };
+    }
+
+    if (poly2.getDegree() === -1) {
+        return {
+            result: 'O divisor não pode ser zero.',
+            isError: true,
+        };
+    }
+
+    // Algoritmo de divisão de polinómios
+    let dividend = new Polynomial({...poly1.coefficients});
+    let quotient = new Polynomial({});
+    let remainder = new Polynomial({});
+
+    while (dividend.getDegree() >= poly2.getDegree() && dividend.getDegree() >= 0) {
+        const dividendDegree = dividend.getDegree();
+        const divisorDegree = poly2.getDegree();
+        const newDegree = dividendDegree - divisorDegree;
+        
+        const dividendLeadingCoef = dividend.coefficients[dividendDegree];
+        const divisorLeadingCoef = poly2.coefficients[divisorDegree];
+        const newCoef = dividendLeadingCoef / divisorLeadingCoef;
+        
+        quotient.coefficients[newDegree] = newCoef;
+        
+        const term = new Polynomial({});
+        term.coefficients[newDegree] = newCoef;
+        const product = term.multiply(poly2);
+        
+        dividend = dividend.subtract(product).clean();
+    }
+    
+    remainder = dividend.clean();
+    
+    const quotientStr = quotient.clean().toString();
+    const remainderStr = remainder.toString();
+    
+    const steps = [
+        `Dividendo: ${poly1.toString()}`,
+        `Divisor: ${poly2.toString()}`,
+        ``,
+        `Algoritmo de Divisão de Polinómios:`,
+        `<strong>Quociente: ${quotientStr}</strong>`,
+        `<strong>Resto: ${remainderStr}</strong>`,
+    ];
+
+    const verification = `
+        <strong>Verificação:</strong>
+        
+       <br>
+        Fórmula: Dividendo = Divisor × Quociente + Resto
+        
+       '<br>'
+        ${poly1.toString()} = (${poly2.toString()}) × (${quotientStr}) + (${remainderStr})<br>
+        <strong style="color: #66ff66;">✓ Verificação correcta!</strong>
+    `;
+    
+    return {
+        result: `Quociente: ${quotientStr}
+        <br>
+        Resto: ${remainderStr}`,
+        steps: steps,
+        example: `Exemplo: (x² + 5x + 6) ÷ (x + 2) = x + 3 com resto 0`,
+        verification: verification,
+        isError: false,
+    };
+}
+
+// ======================== HANDLERS - EQUAÇÕES ========================
+
+function solveEquation1Grau(data) {
+    const a = parseFloat(data.a);
+    const b = parseFloat(data.b);
+    
+    if (a === 0) {
+        if (b === 0) {
+            return {
+                result: 'A equação tem infinitas soluções (0 = 0).',
+                isError: true,
+            };
+        } else {
+            return {
+                result: 'A equação não tem solução (impossível).',
+                isError: true,
+            };
+        }
+    }
+    
+    const x = -b / a;
+    
+    return {
+        result: `x = ${x.toFixed(4)}`,
+        steps: [
+            `Equação: ${a}x + ${b} = 0`,
+            `Forma geral: ax + b = 0`,
+            `Fórmula: x = -b/a`,
+            `Cálculo: x = -${b}/${a}`,
+            `<strong>x = ${x.toFixed(4)}</strong>`,
+            `Verificação: ${a} × ${x.toFixed(4)} + ${b} = ${(a * x + b).toFixed(6)}`,
+        ],
+        example: `Exemplos: 2x + 4 = 0 → x = -2; 3x - 9 = 0 → x = 3; -x + 5 = 0 → x = 5`,
+        verification: `<strong>Verificação:</strong><br>Substituir x = ${x.toFixed(4)} na equação:<br>${a} × ${x.toFixed(4)} + ${b} = ${(a * x + b).toFixed(10)} ≈ 0<br><strong style="color: #66ff66;">✓ Solução correcta!</strong>`,
+        isError: false,
+    };
+}
+
+function solveEquation2Grau(data) {
+    const a = parseFloat(data.a);
+    const b = parseFloat(data.b);
+    const c = parseFloat(data.c);
+    
+    if (a === 0) {
+        return {
+            result: 'Não é uma equação do 2º grau. O coeficiente a não pode ser zero.',
+            isError: true,
+        };
+    }
+    
+    const discriminant = b * b - 4 * a * c;
+    let steps = [
+        `Equação: ${a}x² + ${b}x + ${c} = 0`,
+        `Forma geral: ax² + bx + c = 0`,
+        `Fórmula de Bhaskara: x = (-b ± √Δ) / 2a`,
+        `Cálculo do discriminante:`,
+        `Δ = b² - 4ac = (${b})² - 4(${a})(${c})`,
+        `Δ = ${b * b} - ${4 * a * c} = ${discriminant}`,
+    ];
+    
+    let result, example, verification;
+    
+    if (discriminant < 0) {
+        result = 'A equação não tem raízes reais.';
+        steps.push(`Como Δ = ${discriminant} < 0, não há raízes reais`);
+        steps.push(`As raízes são complexas/imaginárias`);
+        example = `Exemplo: x² + 1 = 0 (sem raízes reais)`;
+        return {
+            result: result,
+            steps: steps,
+            example: example,
+            isError: true,
+        };
+    } else if (discriminant === 0) {
+        const x = -b / (2 * a);
+        result = `x = ${x.toFixed(4)} (raiz dupla)`;
+        steps.push(`Como Δ = 0, há uma única solução`);
+        steps.push(`x = -b / (2a) = -${b} / (2 × ${a})`);
+        steps.push(`<strong>x = ${x.toFixed(4)}</strong>`);
+        verification = `<strong>Verificação:</strong><br>Substituir x = ${x.toFixed(4)} na equação:<br>${a} × ${x.toFixed(4)}² + ${b} × ${x.toFixed(4)} + ${c} = ${(a*x*x + b*x + c).toFixed(10)} ≈ 0<br><strong style="color: #66ff66;">✓ Solução correcta!</strong>`;
+        example = `Exemplo: x² - 2x + 1 = 0 → x = 1`;
+    } else {
+        const sqrtDelta = Math.sqrt(discriminant);
+        const x1 = (-b + sqrtDelta) / (2 * a);
+        const x2 = (-b - sqrtDelta) / (2 * a);
+        result = `x₁ = ${x1.toFixed(4)}, x₂ = ${x2.toFixed(4)}`;
+        steps.push(`Como Δ = ${discriminant} > 0, há duas soluções`);
+        steps.push(`√Δ = √${discriminant} = ${sqrtDelta.toFixed(4)}`);
+        steps.push(`x₁ = (-${b} + ${sqrtDelta.toFixed(4)}) / (2 × ${a}) = ${x1.toFixed(4)}`);
+        steps.push(`x₂ = (-${b} - ${sqrtDelta.toFixed(4)}) / (2 × ${a}) = ${x2.toFixed(4)}`);
+        steps.push(`<strong>Soluções: x₁ = ${x1.toFixed(4)}, x₂ = ${x2.toFixed(4)}</strong>`);
+        const val1 = a*x1*x1 + b*x1 + c;
+        const val2 = a*x2*x2 + b*x2 + c;
+        verification = `<strong>Verificação:</strong><br>x₁ = ${x1.toFixed(4)}: ${a}×${x1.toFixed(4)}² + ${b}×${x1.toFixed(4)} + ${c} = ${val1.toFixed(10)} ≈ 0<br>x₂ = ${x2.toFixed(4)}: ${a}×${x2.toFixed(4)}² + ${b}×${x2.toFixed(4)} + ${c} = ${val2.toFixed(10)} ≈ 0<br><strong style="color: #66ff66;">✓ Soluções correctas!</strong>`;
+        example = `Exemplo: x² - 5x + 6 = 0 → x₁ = 2, x₂ = 3`;
+    }
+    
+    return {
+        result: result,
+        steps: steps,
+        example: example,
+        verification: verification,
+        isError: false,
+    };
+}
+
+// ======================== HANDLERS - RADICIAÇÃO ========================
+
+function solveRootOperations(data) {
+    const radicand1 = parseFloat(data.radicand1);
+    const index1 = parseInt(data.index1) || 2;
+    const radicand2 = parseFloat(data.radicand2);
+    const index2 = parseInt(data.index2) || 2;
+    const operation = data.operation;
+
+    const root1 = Math.pow(radicand1, 1 / index1);
+    const root2 = Math.pow(radicand2, 1 / index2);
+
+    let steps = [];
+    let result, resultStr;
+
+    steps.push(`Raiz 1: ${index1}√${radicand1} = ${root1.toFixed(4)}`);
+    steps.push(`Raiz 2: ${index2}√${radicand2} = ${root2.toFixed(4)}`);
+    steps.push(``);
+
+    switch (operation) {
+        case '+':
+            if (index1 === index2 && radicand1 === radicand2) {
+                result = root1 + root2;
+                resultStr = `2 × ${index1}√${radicand1}`;
+                steps.push(`Adição com raízes iguais:`);
+                steps.push(`${index1}√${radicand1} + ${index2}√${radicand2}`);
+                steps.push(`= 2 × ${index1}√${radicand1}`);
+                steps.push(`= ${result.toFixed(4)}`);
+            } else {
+                result = root1 + root2;
+                resultStr = `${root1.toFixed(4)} + ${root2.toFixed(4)} = ${result.toFixed(4)}`;
+                steps.push(`Adição com raízes diferentes:`);
+                steps.push(`${index1}√${radicand1} + ${index2}√${radicand2}`);
+                steps.push(`= ${root1.toFixed(4)} + ${root2.toFixed(4)}`);
+                steps.push(`= ${result.toFixed(4)}`);
+            }
+            break;
+
+        case '-':
+            result = root1 - root2;
+            resultStr = `${result.toFixed(4)}`;
+            steps.push(`Subtração:`);
+            steps.push(`${index1}√${radicand1} - ${index2}√${radicand2}`);
+            steps.push(`= ${root1.toFixed(4)} - ${root2.toFixed(4)}`);
+            steps.push(`= ${result.toFixed(4)}`);
+            break;
+
+        case 'x':
+            if (index1 === index2) {
+                result = root1 * root2;
+                const product = radicand1 * radicand2;
+                resultStr = `${index1}√${product} = ${result.toFixed(4)}`;
+                steps.push(`Multiplicação com mesmo índice:`);
+                steps.push(`${index1}√${radicand1} × ${index2}√${radicand2}`);
+                steps.push(`= ${index1}√(${radicand1} × ${radicand2})`);
+                steps.push(`= ${index1}√${product}`);
+                steps.push(`= ${result.toFixed(4)}`);
+            } else {
+                result = root1 * root2;
+                resultStr = `${result.toFixed(4)}`;
+                steps.push(`Multiplicação com índices diferentes:`);
+                steps.push(`${index1}√${radicand1} × ${index2}√${radicand2}`);
+                steps.push(`= ${root1.toFixed(4)} × ${root2.toFixed(4)}`);
+                steps.push(`= ${result.toFixed(4)}`);
+            }
+            break;
+
+        case '/':
+            if (radicand2 === 0) {
+                return {
+                    result: 'Não é possível fazer a divisão por zero. O radicando do divisor não pode ser zero.',
+                    isError: true,
+                };
+            }
+            result = root1 / root2;
+            resultStr = `${result.toFixed(4)}`;
+            steps.push(`Divisão:`);
+            steps.push(`${index1}√${radicand1} ÷ ${index2}√${radicand2}`);
+            steps.push(`= ${root1.toFixed(4)} ÷ ${root2.toFixed(4)}`);
+            steps.push(`= ${result.toFixed(4)}`);
+            break;
+    }
+
+    steps.push(`<strong>Resultado: ${resultStr}</strong>`);
+
+    return {
+        result: resultStr,
+        steps: steps,
+        example: `Exemplos: √4 + √9 = 2 + 3 = 5; √16 - √4 = 4 - 2 = 2; √4 × √9 = √36 = 6; √16 ÷ √4 = 4 ÷ 2 = 2`,
+        isError: false,
+    };
+}
+
+function solveSquareRoot(data) {
+    const number = parseFloat(data.number);
+
+    if (number < 0) {
+        return {
+            result: 'Não é possível calcular a raiz quadrada de um número negativo em números reais.',
+            isError: true,
+        };
+    }
+
+    const result = Math.sqrt(number);
+    const isIntegerRoot = Number.isInteger(result);
+
+    let steps = [
+        `Número: ${number}`,
+        `Procuramos um número que multiplicado por ele mesmo dê ${number}`,
+    ];
+
+    if (isIntegerRoot) {
+        steps.push(`√${number} = ${result} (quadrado perfeito)`);
+        steps.push(`Verificação: ${result}² = ${result * result}`);
+    } else {
+        const lower = Math.floor(result);
+        const upper = Math.ceil(result);
+        steps.push(`${lower}² = ${lower * lower}`);
+        steps.push(`${upper}² = ${upper * upper}`);
+        steps.push(`${number} está entre ${lower * lower} e ${upper * upper}`);
+        steps.push(`<strong>√${number} ≈ ${result.toFixed(4)}</strong>`);
+    }
+
+    return {
+        result: isIntegerRoot ? result : result.toFixed(4),
+        steps: steps,
+        example: `Quadrados perfeitos: √1 = 1, √4 = 2, √9 = 3, √16 = 4, √25 = 5, √36 = 6, √49 = 7, √64 = 8, √81 = 9, √100 = 10`,
+        isError: false,
+    };
+}
+
+function solveCubeRoot(data) {
+    const number = parseFloat(data.number);
+
+    const result = Math.cbrt(number);
+    const isIntegerRoot = Number.isInteger(result);
+
+    let steps = [
+        `Número: ${number}`,
+        `Procuramos um número que multiplicado por si mesmo três vezes dê ${number}`,
+    ];
+
+    if (isIntegerRoot) {
+        steps.push(`∛${number} = ${result} (cubo perfeito)`);
+        steps.push(`Verificação: ${result}³ = ${result * result * result}`);
+    } else {
+        const lower = Math.floor(result);
+        const upper = Math.ceil(result);
+        steps.push(`${lower}³ = ${lower * lower * lower}`);
+        steps.push(`${upper}³ = ${upper * upper * upper}`);
+        steps.push(`${number} está entre ${lower * lower * lower} e ${upper * upper * upper}`);
+        steps.push(`<strong>∛${number} ≈ ${result.toFixed(4)}</strong>`);
+    }
+
+    return {
+        result: isIntegerRoot ? result : result.toFixed(4),
+        steps: steps,
+        example: `Cubos perfeitos: ∛1 = 1, ∛8 = 2, ∛27 = 3, ∛64 = 4, ∛125 = 5, ∛216 = 6, ∛343 = 7, ∛512 = 8, ∛729 = 9, ∛1000 = 10`,
+        isError: false,
+    };
+}
+
+function solveNthRoot(data) {
+    const number = parseFloat(data.number);
+    const index = parseInt(data.index);
+
+    if (index < 2) {
+        return {
+            result: 'O índice da raiz deve ser maior ou igual a 2.',
+            isError: true,
+        };
+    }
+
+    if (number < 0 && index % 2 === 0) {
+        return {
+            result: 'Não é possível calcular a raiz de índice par de um número negativo em números reais.',
+            isError: true,
+        };
+    }
+
+    const result = Math.pow(number, 1 / index);
+
+    let steps = [
+        `Número: ${number}`,
+        `Índice: ${index}`,
+        `Procuramos um número que elevado à potência ${index} dê ${number}`,
+        `Fórmula: ${index}√${number} = ${number}^(1/${index})`,
+        `Cálculo: ${number}^${(1/index).toFixed(4)} = ${result.toFixed(4)}`,
+    ];
+
+    const verification = Math.pow(result, index);
+    steps.push(`Verificação: ${result.toFixed(4)}^${index} = ${verification.toFixed(2)}`);
+    steps.push(`<strong>Resultado: ${index}√${number} = ${result.toFixed(4)}</strong>`);
+
+    return {
+        result: result.toFixed(4),
+        steps: steps,
+        example: `Exemplos: ⁴√16 = 2 (2⁴ = 16); ⁵√32 = 2 (2⁵ = 32); ³√125 = 5 (5³ = 125)`,
+        isError: false,
+    };
+}
+
+function solveRootSimplification(data) {
+    const radicand = parseInt(data.radicand);
+    const index = parseInt(data.index) || 2;
+
+    if (radicand === 0) {
+        return {
+            result: '0',
+            steps: [`A raiz de 0 é sempre 0`],
+            example: 'Qualquer raiz de 0 é 0',
+            isError: false,
+        };
+    }
+
+    if (radicand === 1) {
+        return {
+            result: '1',
+            steps: [`A raiz de 1 é sempre 1`],
+            example: 'Qualquer raiz de 1 é 1',
+            isError: false,
+        };
+    }
+
+    const factors = primeFactorize(radicand);
+    if (!factors || factors.length === 0) {
+        return {
+            result: 'Não foi possível simplificar a raiz.',
+            isError: true,
+        };
+    }
+
+    let steps = [
+        `Radicando: ${radicand}`,
+        `Índice: ${index}`,
+        `Passo 1: Fatorização prima`,
+        `${radicand} = ${factors.join(' × ')}`,
+    ];
+
+    const grouped = {};
+    factors.forEach(f => {
+        grouped[f] = (grouped[f] || 0) + 1;
+    });
+
+    steps.push(`Passo 2: Agrupar fatores`);
+    let factorString = Object.entries(grouped).map(([base, exp]) => 
+        exp === 1 ? base : `${base}^${exp}`
+    ).join(' × ');
+    steps.push(`${radicand} = ${factorString}`);
+
+    steps.push(`Passo 3: Simplificar`);
+    let outside = 1;
+    let inside = 1;
+
+    for (const [base, exp] of Object.entries(grouped)) {
+        const baseNum = parseInt(base);
+        const quotient = Math.floor(exp / index);
+        const remainder = exp % index;
+        
+        if (quotient > 0) {
+            outside *= Math.pow(baseNum, quotient);
+            steps.push(`${base}^${exp}: ${quotient} sai da raiz, ${remainder} fica dentro`);
+        }
+        if (remainder > 0) {
+            inside *= Math.pow(baseNum, remainder);
+        }
+    }
+
+    steps.push(`Passo 4: Resultado`);
+    let resultStr = '';
+    if (outside === 1) {
+        resultStr = index === 2 ? `√${inside}` : `${index}√${inside}`;
+    } else {
+        resultStr = index === 2 ? `${outside}√${inside}` : `${outside}·${index}√${inside}`;
+    }
+    steps.push(`<strong>${resultStr}</strong>`);
+
+    return {
+        result: resultStr,
+        steps: steps,
+        example: `Exemplos: √12 = 2√3 (porque 12 = 4×3); √50 = 5√2 (porque 50 = 25×2); ³√24 = 2·³√3 (porque 24 = 8×3)`,
+        isError: false,
+    };
+}
+
+// ======================== HANDLERS - FRAÇÕES E OUTROS ========================
+
+function solveFractions(data) {
+    const num1 = parseInt(data.numerator1);
+    const den1 = parseInt(data.denominator1);
+    const num2 = parseInt(data.numerator2);
+    const den2 = parseInt(data.denominator2);
+    const operation = data.operation;
+
+    if (den1 === 0 || den2 === 0) {
+        return {
+            result: 'Os denominadores não podem ser zero.',
+            isError: true,
+        };
+    }
+
+    let resultNum, resultDen;
+    let stepDetails = [];
+
+    switch (operation) {
+        case '+':
+            stepDetails.push(`Fração 1: ${num1}/${den1}`);
+            stepDetails.push(`Fração 2: ${num2}/${den2}`);
+            const mmcPlus = calcMMC(den1, den2);
+            stepDetails.push(`Mínimo Múltiplo Comum (${den1}, ${den2}) = ${mmcPlus}`);
+            resultNum = num1 * (mmcPlus / den1) + num2 * (mmcPlus / den2);
+            resultDen = mmcPlus;
+            stepDetails.push(`(${num1}×${mmcPlus/den1} + ${num2}×${mmcPlus/den2}) / ${mmcPlus} = ${resultNum} / ${resultDen}`);
+            break;
+
+        case '-':
+            stepDetails.push(`Fração 1: ${num1}/${den1}`);
+            stepDetails.push(`Fração 2: ${num2}/${den2}`);
+            const mmcMinus = calcMMC(den1, den2);
+            stepDetails.push(`Mínimo Múltiplo Comum (${den1}, ${den2}) = ${mmcMinus}`);
+            resultNum = num1 * (mmcMinus / den1) - num2 * (mmcMinus / den2);
+            resultDen = mmcMinus;
+            stepDetails.push(`(${num1}×${mmcMinus/den1} - ${num2}×${mmcMinus/den2}) / ${mmcMinus} = ${resultNum} / ${resultDen}`);
+            break;
+
+        case 'x':
+            stepDetails.push(`${num1}/${den1} × ${num2}/${den2}`);
+            resultNum = num1 * num2;
+            resultDen = den1 * den2;
+            stepDetails.push(`(${num1} × ${num2}) / (${den1} × ${den2}) = ${resultNum} / ${resultDen}`);
+            break;
+
+        case '/':
+            if (num2 === 0) {
+                return {
+                    result: 'Não é possível fazer a divisão. O numerador do divisor não pode ser zero.',
+                    isError: true,
+                };
+            }
+            stepDetails.push(`${num1}/${den1} ÷ ${num2}/${den2}`);
+            resultNum = num1 * den2;
+            resultDen = den1 * num2;
+            stepDetails.push(`(${num1} × ${den2}) / (${den1} × ${num2}) = ${resultNum} / ${resultDen}`);
+            break;
+    }
+
+    const gcd = calcGCD(Math.abs(resultNum), Math.abs(resultDen));
+    const simplified = `${resultNum / gcd}/${resultDen / gcd}`;
+    stepDetails.push(`Máximo Divisor Comum: ${gcd}`);
+    stepDetails.push(`<strong>Simplificado: ${simplified}</strong>`);
+
+    return {
+        result: simplified,
+        steps: stepDetails,
+        example: `Exemplo: 1/2 + 1/4 = 2/4 + 1/4 = 3/4`,
+        isError: false,
+    };
+}
+
+function solvePercentage(data) {
+    const value = parseFloat(data.value);
+    const percent = parseFloat(data.percent);
+
+    if (value < 0) {
+        return {
+            result: 'O valor não pode ser negativo.',
+            isError: true,
+        };
+    }
+
+    if (percent < 0) {
+        return {
+            result: 'A percentagem não pode ser negativa.',
+            isError: true,
+        };
+    }
+
+    const result = (value * percent) / 100;
+
+    const steps = [
+        `Valor: ${value}`,
+        `Percentagem: ${percent}%`,
+        `Fórmula: (Valor × Percentagem) / 100`,
+        `Cálculo: (${value} × ${percent}) / 100`,
+        `Resultado: ${result.toFixed(2)}`,
+    ];
+
+    return {
+        result: result.toFixed(2),
+        steps: steps,
+        example: `Exemplos: 25% de 80 = 20; 50% de 100 = 50; 10% de 150 = 15`,
+        isError: false,
+    };
+}
+
+function solveGCD(data) {
+    const num1 = parseInt(data.number1);
+    const num2 = parseInt(data.number2);
+
+    if (num1 === 0 && num2 === 0) {
+        return {
+            result: 'O MDC de 0 e 0 é indefinido.',
+            isError: true,
+        };
+    }
+
+    const result = calcGCD(Math.abs(num1), Math.abs(num2));
+
+    return {
+        result: result,
+        steps: [
+            `Máximo Divisor Comum de ${num1} e ${num2}:`,
+            `MDC(${Math.abs(num1)}, ${Math.abs(num2)}) = ${result}`,
+        ],
+        example: `Exemplos: MDC(12, 18) = 6; MDC(20, 30) = 10; MDC(48, 60) = 12`,
+        isError: false,
+    };
+}
+
+function solveLCM(data) {
+    const num1 = parseInt(data.number1);
+    const num2 = parseInt(data.number2);
+
+    if (num1 === 0 || num2 === 0) {
+        return {
+            result: 'O MMC não pode ser calculado com zero.',
+            isError: true,
+        };
+    }
+
+    const result = calcMMC(Math.abs(num1), Math.abs(num2));
+
+    return {
+        result: result,
+        steps: [
+            `Mínimo Múltiplo Comum de ${num1} e ${num2}:`,
+            `MMC(${Math.abs(num1)}, ${Math.abs(num2)}) = ${result}`,
+        ],
+        example: `Exemplos: MMC(4, 6) = 12; MMC(5, 10) = 10; MMC(12, 18) = 36`,
+        isError: false,
+    };
+}
+
+function solvePrimeFactor(data) {
+    const number = parseInt(data.number);
+
+    if (number < 2) {
+        return {
+            result: 'O número deve ser maior ou igual a 2.',
+            isError: true,
+        };
+    }
+
+    const factors = primeFactorize(number);
+
+    if (!factors || factors.length === 0) {
+        return {
+            result: 'Não foi possível fazer a fatorização.',
+            isError: true,
+        };
+    }
+
+    const grouped = {};
+    factors.forEach(f => {
+        grouped[f] = (grouped[f] || 0) + 1;
+    });
+
+    const exponentialForm = Object.entries(grouped)
+        .map(([base, exp]) => exp === 1 ? base : `${base}^${exp}`)
+        .join(' × ');
+
+    return {
+        result: exponentialForm,
+        steps: [
+            `Número: ${number}`,
+            `Fatorização prima: ${factors.join(' × ')}`,
+            `<strong>Forma exponencial: ${exponentialForm}</strong>`,
+        ],
+        example: `Exemplos: 60 = 2² × 3 × 5; 100 = 2² × 5²; 120 = 2³ × 3 × 5`,
+        isError: false,
+    };
+}
+
+function solveSine(data) {
+    const angle = parseFloat(data.angle);
+    const angleRad = (angle * Math.PI) / 180;
+    const result = Math.sin(angleRad);
+
+    return {
+        result: result.toFixed(4),
+        steps: [
+            `Ângulo: ${angle}°`,
+            `Converter para radianos: ${angle}° × π/180 = ${angleRad.toFixed(4)} radianos`,
+            `sen(${angle}°) = ${result.toFixed(4)}`,
+        ],
+        example: `Ângulos especiais: sen(30°) = 0.5; sen(45°) ≈ 0.7071; sen(60°) ≈ 0.866; sen(90°) = 1`,
+        isError: false,
+    };
+}
+
+function solveCosine(data) {
+    const angle = parseFloat(data.angle);
+    const angleRad = (angle * Math.PI) / 180;
+    const result = Math.cos(angleRad);
+
+    return {
+        result: result.toFixed(4),
+        steps: [
+            `Ângulo: ${angle}°`,
+            `Converter para radianos: ${angle}° × π/180 = ${angleRad.toFixed(4)} radianos`,
+            `cos(${angle}°) = ${result.toFixed(4)}`,
+        ],
+        example: `Ângulos especiais: cos(0°) = 1; cos(45°) ≈ 0.7071; cos(60°) = 0.5; cos(90°) = 0`,
+        isError: false,
+    };
+}
+
+function solveTangent(data) {
+    const angle = parseFloat(data.angle);
+    
+    if (Math.abs(angle % 180 - 90) < 0.0001) {
+        return {
+            result: 'A tangente é indefinida neste ângulo.',
+            isError: true,
+        };
+    }
+
+    const angleRad = (angle * Math.PI) / 180;
+    const result = Math.tan(angleRad);
+
+    return {
+        result: result.toFixed(4),
+        steps: [
+            `Ângulo: ${angle}°`,
+            `Converter para radianos: ${angle}° × π/180 = ${angleRad.toFixed(4)} radianos`,
+            `tan(${angle}°) = ${result.toFixed(4)}`,
+        ],
+        example: `Ângulos especiais: tan(0°) = 0; tan(45°) = 1; tan(60°) ≈ 1.732`,
+        isError: false,
+    };
+}
+
+// ======================== FUNÇÕES AUXILIARES ========================
+
+function calcGCD(a, b) {
+    return b === 0 ? a : calcGCD(b, a % b);
+}
+
+function calcMMC(a, b) {
+    return (a * b) / calcGCD(a, b);
+}
+
+function primeFactorize(num) {
+    const factors = [];
+    let divisor = 2;
+    while (num >= 2) {
+        if (num % divisor === 0) {
+            factors.push(divisor);
+            num = num / divisor;
+        } else {
+            divisor++;
+        }
+    }
+    return factors;
+}
+
+// ======================== INICIALIZAÇÃO ========================
+
+loadSavedTheme();
+
+console.log('TrigMaster iniciado com sucesso!');
+    </script>
+</body>
+</html>
